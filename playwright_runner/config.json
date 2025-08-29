@@ -8,16 +8,9 @@
   "boot": "manual",
   "host_network": true,
   "options": {
-    "script": "twex_stock_filter.py"
+    "script_name": "twex_stock_filter.py"
   },
   "schema": {
-    "script": {
-      "type": "select",
-      "options": [
-        "twex_stock_filter.py",
-        "twse_stock_filter.py"
-      ],
-      "default": "twex_stock_filter.py"
-    }
+    "script_name": "str"
   }
 }

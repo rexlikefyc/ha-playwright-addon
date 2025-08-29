@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libcups2 \
     libgtk-3-0 \
     libgbm-dev \
+    jq \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 

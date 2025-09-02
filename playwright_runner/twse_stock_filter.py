@@ -24,7 +24,10 @@ except ImportError:
 
 # 設定日誌
 # Set up logging to a file.
-logging.basicConfig(filename="/config/scrape_log_twse.txt", level=logging.INFO, encoding="utf-8", format="%(asctime)s - %(levelname)s - %(message)s")
+# The original path '/config/scrape_log_twse.txt' caused a FileNotFoundError.
+# We'll use a local filename instead, which will create the file
+# in the same directory as the script.
+logging.basicConfig(filename="scrape_log_twse.txt", level=logging.INFO, encoding="utf-8", format="%(asctime)s - %(levelname)s - %(message)s")
 
 def roc_to_ad(roc_date_str):
     """
@@ -176,7 +179,7 @@ def fetch_industry_chain_info(stock_code):
             
             industry_info["industry"] = ", ".join(industries)
             industry_info["industry_chain"] = ", ".join(industry_chains)
-        
+            
         return industry_info
 
     except requests.exceptions.RequestException as e:
@@ -363,7 +366,7 @@ def analyze_twse_stocks(year_month=None):
             output_data["volume_multiplier"] = f"{volume_multiplier_5_output:.2f}"
         else:
             output_data["volume_multiplier"] = f"{volume_multiplier_1_4_output:.2f}"
-        
+            
         logging.info(f"股票 {stock_id} 符合條件: {output_data['conditions_met']}")
         return output_data
 
@@ -401,12 +404,12 @@ def analyze_twse_stocks(year_month=None):
             "industry", "industry_chain"
         ]]
         other_df.columns = final_columns
-        output_file_other = f"/config/filtered_twse_stocks_others_{year}_{month:02d}.csv"
+        output_file_other = f"filtered_twse_stocks_others_{year}_{month:02d}.csv"
         other_df.to_csv(output_file_other, index=False, encoding="utf-8-sig")
         logging.info(f"其他符合條件股票已輸出至 {output_file_other}，共 {len(other_stocks)} 檔")
         print(f"✅ 其他符合條件股票共 {len(other_stocks)} 檔")
     else:
-        output_file_other = f"/config/filtered_twse_stocks_others_{year}_{month:02d}.csv"
+        output_file_other = f"filtered_twse_stocks_others_{year}_{month:02d}.csv"
         with open(output_file_other, "w", encoding="utf-8-sig") as f:
             f.write("股票代號,股票名稱,當日收盤價,交易量超過5或10最多均量的倍數,符合條件,所屬產業,產業鏈\n")
             f.write("無其他符合條件的股票")
@@ -422,12 +425,12 @@ def analyze_twse_stocks(year_month=None):
             "industry", "industry_chain"
         ]]
         condition5_df.columns = final_columns
-        output_file_condition5 = f"/config/filtered_twse_stocks_condition5_{year}_{month:02d}.csv"
+        output_file_condition5 = f"filtered_twse_stocks_condition5_{year}_{month:02d}.csv"
         condition5_df.to_csv(output_file_condition5, index=False, encoding="utf-8-sig")
         logging.info(f"符合條件五的股票已輸出至 {output_file_condition5}，共 {len(condition5_stocks)} 檔")
         print(f"✅ 符合條件五的股票共 {len(condition5_stocks)} 檔")
     else:
-        output_file_condition5 = f"/config/filtered_twse_stocks_condition5_{year}_{month:02d}.csv"
+        output_file_condition5 = f"filtered_twse_stocks_condition5_{year}_{month:02d}.csv"
         with open(output_file_condition5, "w", encoding="utf-8-sig") as f:
             f.write("股票代號,股票名稱,當日收盤價,交易量超過5或10最多均量的倍數,符合條件,所屬產業,產業鏈\n")
             f.write("無符合條件五的股票")

@@ -366,7 +366,7 @@ def analyze_tpex_stocks(year_month=None):
             output_data["volume_multiplier"] = f"{volume_multiplier_5_output:.2f}"
         else:
             output_data["volume_multiplier"] = f"{volume_multiplier_1_4_output:.2f}"
-        
+            
         logging.info(f"股票 {stock_id} 符合條件: {output_data['conditions_met']}")
         return output_data
 

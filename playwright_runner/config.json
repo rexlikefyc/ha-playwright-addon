@@ -1,6 +1,6 @@
 {
   "name": "Playwright Runner",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "slug": "playwright_runner",
   "description": "A Home Assistant add-on to run Playwright scripts.",
   "arch": ["amd64", "armhf", "armv7", "aarch64"],

@@ -494,7 +494,7 @@ def display_results(other_file, condition5_file):
     # Output the Markdown document
     print("報告生成完畢，請在右側文件區查看。")
 
-if name == "main":
+if __name__ == "__main__":
     start_time = time.time()
     other_file_path, condition5_file_path = analyze_tpex_stocks()
     display_results(other_file_path, condition5_file_path)

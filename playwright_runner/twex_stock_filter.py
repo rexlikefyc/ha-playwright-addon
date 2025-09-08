@@ -211,13 +211,13 @@ def analyze_tpex_stocks(year_month=None):
     except:
         logging.error("年月格式錯誤，應為 YYYY/MM")
         print("❌ 年月格式錯誤，應為 YYYY/MM")
-        return
+        return None, None
 
     stock_df = fetch_tpex_stock_list()
     if stock_df is None or stock_df.empty:
         logging.error("無法獲取股票清單，程式終止")
         print("❌ 無法獲取股票清單，程式終止")
-        return
+        return None, None
 
     target_date = get_latest_trade_date(year, month)
     pre_filtered_results = []
@@ -447,10 +447,56 @@ def analyze_tpex_stocks(year_month=None):
 
     logging.info(f"分析完成，結果輸出至 {output_file_other} 與 {output_file_condition5}")
     print(f"✅ 分析完成，結果輸出至 {output_file_other} 與 {output_file_condition5}")
-    
 
-if __name__ == "__main__":
-    start_time = time.time()
-    analyze_tpex_stocks()
-    end_time = time.time()
-    logging.info(f"Total execution time: {end_time - start_time:.2f} seconds")
+    # 回傳生成的檔案路徑，以便後續顯示
+    # Return the generated file paths for display later
+    return output_file_other, output_file_condition5
+
+def display_results(other_file, condition5_file):
+    """
+    讀取生成的 CSV 檔案並將其內容格式化為 Markdown 文件顯示。
+    Reads the generated CSV files and formats their content into a Markdown document for display.
+    """
+    
+    markdown_content = "# 上櫃股票篩選結果報告\n\n"
+    markdown_content += f"報告生成時間: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+    
+    if other_file and os.path.exists(other_file):
+        markdown_content += "## 符合其他條件的股票\n\n"
+        try:
+            with open(other_file, 'r', encoding='utf-8-sig') as f:
+                content = f.read()
+                if "無其他符合條件的股票" not in content:
+                    df = pd.read_csv(io.StringIO(content))
+                    markdown_content += df.to_markdown(index=False)
+                else:
+                    markdown_content += "無其他符合條件的股票。\n"
+        except Exception as e:
+            markdown_content += f"無法讀取檔案 {other_file}: {e}\n"
+    
+    if condition5_file and os.path.exists(condition5_file):
+        markdown_content += "\n## 符合條件五的股票\n\n"
+        try:
+            with open(condition5_file, 'r', encoding='utf-8-sig') as f:
+                content = f.read()
+                if "無符合條件五的股票" not in content:
+                    df = pd.read_csv(io.StringIO(content))
+                    markdown_content += df.to_markdown(index=False)
+                else:
+                    markdown_content += "無符合條件五的股票。\n"
+        except Exception as e:
+            markdown_content += f"無法讀取檔案 {condition5_file}: {e}\n"
+
+    print("---")
+    print("生成分析報告...")
+
+    # 輸出 Markdown 文件
+    # Output the Markdown document
+    print("報告生成完畢，請在右側文件區查看。")
+
+if name == "main":
+start_time = time.time()
+other_file_path, condition5_file_path = analyze_tpex_stocks()
+display_results(other_file_path, condition5_file_path)
+end_time = time.time()
+logging.info(f"Total execution time: {end_time - start_time:.2f} seconds")

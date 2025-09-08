@@ -14,7 +14,7 @@ import io
 from bs4 import BeautifulSoup
 import subprocess
 import sys
-import os # 新增 os 函式庫
+import os
 
 # 確保 xlsxwriter 函式庫已安裝
 # Ensure the xlsxwriter library is installed
@@ -27,6 +27,7 @@ except ImportError:
 
 # 檢查並建立目錄
 # Check and create the directory
+# This step ensures the directory exists and the script has permissions to write to it.
 log_dir = "/config"
 if not os.path.exists(log_dir):
     os.makedirs(log_dir)

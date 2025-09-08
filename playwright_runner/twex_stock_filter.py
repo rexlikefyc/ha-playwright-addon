@@ -450,7 +450,7 @@ def analyze_tpex_stocks(year_month=None):
 
     # 回傳生成的檔案路徑，以便後續顯示
     # Return the generated file paths for display later
-    return output_file_other, condition5_file_path
+    return output_file_other, output_file_condition5
 
 def display_results(other_file, condition5_file):
     """
@@ -489,12 +489,12 @@ def display_results(other_file, condition5_file):
 
     print("---")
     print("生成分析報告...")
-
+    
     # 輸出 Markdown 文件
     # Output the Markdown document
     print("報告生成完畢，請在右側文件區查看。")
 
-if __name__ == "__main__":
+if __name__ == "main":
     start_time = time.time()
     other_file_path, condition5_file_path = analyze_tpex_stocks()
     display_results(other_file_path, condition5_file_path)
